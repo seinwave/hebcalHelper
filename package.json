@@ -12,6 +12,8 @@
   "dependencies": {
     "actions-on-google": "^2.13.0",
     "axios": "^0.20.0",
-    "firebase": "^7.21.1"
+    "compromise": "^13.5.0",
+    "compromise-numbers": "^1.0.0",
+    "firebase": "^7.22.0"
   }
 }
