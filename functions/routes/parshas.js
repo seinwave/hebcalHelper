@@ -18,11 +18,11 @@ const parshas = (conv) => {
           return i.leyning.torah !== undefined;
         });
         if (filtered[0].category === "holiday") {
-          return conv.ask(
+          return conv.close(
             `The date you're asking about is a holiday — ${filtered[0].title}. The Torah portion is ${filtered[0].leyning.torah}`
           );
         } else {
-          return conv.ask(
+          return conv.close(
             `The parsha is ${filtered[0].title}. That's ${filtered[0].leyning.torah}.`
           );
         }

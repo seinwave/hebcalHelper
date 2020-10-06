@@ -34,7 +34,7 @@ const candles = (conv) => {
         const timeSentence = candleItem[0].title;
         const timeRegEx = /([0-1]?[0-9]|2[0-3]):[0-5][0-9][a-z][a-z]$/gim;
         const time = timeSentence.match(timeRegEx);
-        return conv.ask(`Light the Shabbat candles at ${time[0]}.`);
+        return conv.close(`Light the Shabbat candles at ${time[0]}.`);
       })
       .catch((error) => {
         console.log(error);

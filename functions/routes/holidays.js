@@ -16,6 +16,7 @@ month[11] = "December";
 
 const holidays = (conv) => {
   let gregReady = he.dateConverter(conv.query, conv.parameters);
+  console.log("GREGORIAN:", gregReady);
   const hebCalString = `https://www.hebcal.com/hebcal?v=1&cfg=json&min=on&maj=on&year=${gregReady.year}`;
   console.log("API CALL:", hebCalString);
   const holiday = conv.parameters["major-holiday"];
@@ -32,13 +33,13 @@ const holidays = (conv) => {
       const date = new Date(noErevs[0].date);
       console.log("DATE:", date);
       if (date < Date.now()) {
-        return conv.ask(
+        return conv.close(
           `In ${gregReady.year}, ${holiday} was on ${
             month[date.getMonth()]
           } ${date.getDate()}.`
         );
       } else {
-        return conv.ask(
+        return conv.close(
           `In ${gregReady.year}, ${holiday} is on ${
             month[date.getMonth()]
           } ${date.getDate()}.`

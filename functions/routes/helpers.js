@@ -18,12 +18,23 @@ function addTime(query, date) {
 
 function dateConverter(query, params) {
   let receivedRawDate;
-  if (params["date-period"]) {
+  if (typeof params["date-time"] === "string") {
+    // maybe the weirdest DF edge case
+    // asking about the year 1955 is treated like
+    // asking about TODAY, at 7:55pm
+    console.log("DATE-TIME PARAMETERS:", params);
+    if (params["date-time"].includes("19:55")) {
+      receivedRawDate = "1955-01-01T00:00:00-04:00";
+    } else {
+      receivedRawDate = params["date-time"];
+    }
+  } else if (params["date-period"]) {
     receivedRawDate = params["date-period"]["startDate"];
-  } else if (typeof params["date-time"] === "string") {
-    receivedRawDate = params["date-time"];
   } else if (Object.keys(params["date-time"]).includes("endDateTime")) {
     if (
+      // fixing an edge case where dialogflow returns
+      // a result from the present year, but several weeks
+      // in the past
       new Date(params["date-time"]["endDateTime"]) < Date.now() &&
       query.includes("weeks")
     ) {
@@ -37,7 +48,21 @@ function dateConverter(query, params) {
     receivedRawDate = params["date-time"]["date_time"];
   }
 
+  console.log(receivedRawDate);
+
+  // fixing edge cases where DF returns a startDate
+  // with an end time of "03:58:29"
+  // (...for some reason),
+  // which Date.parse() cannot work with
+  // (...for some reason).
+  if (receivedRawDate.includes('03:58:29')){
+    const regex = /03:58:29/gi;
+    receivedRawDate = receivedRawDate.replace(regex, '04:00');
+  }
+  
   const gregRaw = new Date(Date.parse(receivedRawDate));
+  console.log("RAWGREG:", gregRaw);
+
   const gregReady = {};
   gregReady.year = gregRaw.getFullYear();
   gregReady.month = gregRaw.getMonth() + 1;
