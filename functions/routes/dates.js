@@ -14,7 +14,7 @@ const dates = (conv) => {
       .getHebrewDate(hebCalString)
       .then((response) => {
         const processedDate = new ReadyDate(gregReady, response.data);
-        return conv.ask(
+        return conv.close(
           `It's the ${processedDate.hebDate.hd} of ${processedDate.hebDate.hm}, in the year ${processedDate.hebDate.hy}.`
         );
       })
